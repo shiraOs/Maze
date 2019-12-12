@@ -10,7 +10,8 @@ Queue::Queue()
 
 Queue::~Queue()
 {
-	//dtor
+	for (int i = 0; i < MAX_SIZE; i++)
+		delete this->data[i];
 }
 
 void Queue::MakeEmpty()
@@ -24,7 +25,7 @@ bool Queue::isEmpty()
 	return (AddOne(tail)==head);
 }
 
-char Queue::front()
+int* Queue::front()
 {
 	if (isEmpty())
 	{
@@ -36,7 +37,7 @@ char Queue::front()
 
 }
 
-void Queue::EnQueue(char item)
+void Queue::EnQueue(int* item)
 {
 	if (AddOne(AddOne(tail)) == head)
 	{
@@ -47,9 +48,9 @@ void Queue::EnQueue(char item)
 	data[tail] = item;
 }
 
-char Queue::DeQueue()
+int* Queue::DeQueue()
 {
-	char item;
+	int* item;
 
 	if (isEmpty())
 	{

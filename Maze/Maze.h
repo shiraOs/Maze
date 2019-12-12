@@ -31,6 +31,7 @@ public:
 	bool setWidth(int width);
 
 	void create();
+	void solve();
 
 	void print();
 };

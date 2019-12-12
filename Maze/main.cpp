@@ -3,8 +3,10 @@
 
 void main()
 {
-	Maze shira(9, 9);
+	Maze shira(25, 71);
 	shira.print();
+	cout << endl;
+	cout << endl;
 	cout << endl;
 	shira.create();
 	shira.print();

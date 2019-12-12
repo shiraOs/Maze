@@ -78,6 +78,8 @@ bool Maze::setWidth(int width)
 	return true;
 }
 
+
+
 void Maze::create()
 {
 	Stack s1; 
@@ -109,13 +111,6 @@ void Maze::create()
 			count++;
 
 		}
-		if (((w - 2) > 0) && (this->maze[h][w - 2] == ' '))//left
-		{
-			left[0] = h;
-			left[1] = w - 2;
-			path[count] = left;
-			count++;
-		}
 		if (((h + 2) < this->getHight() - 1) && (this->maze[h + 2][w] == ' ')) //down
 		{
 			down[0] = h + 2;
@@ -123,6 +118,14 @@ void Maze::create()
 			path[count] = down;
 			count++;
 		}
+		if (((w - 2) > 0) && (this->maze[h][w - 2] == ' '))//left
+		{
+			left[0] = h;
+			left[1] = w - 2;
+			path[count] = left;
+			count++;
+		}
+		
 		if (((h - 2) > 0) && (this->maze[h - 2][w] == ' ')) //up
 		{
 			up[0] = h - 2;
@@ -134,7 +137,7 @@ void Maze::create()
 		if (count != 0)
 		{
 			kgo[0] = k[0];
-			kgo[1] = k[1];
+			kgo[1] = k[1]; //because rand delete k from some reason ?????
 			rad = rand() % count;
 			temp[0] = path[rad][0];
 			temp[1] = path[rad][1];
@@ -152,7 +155,6 @@ void Maze::create()
 			s1.Push(temp);
 		}
 			
-		this->print();
 
 
 	}		
@@ -160,6 +162,66 @@ void Maze::create()
 		for (int j = 0; j < width; j++)
 			if (this->maze[i][j] == '$')
 				this->maze[i][j] = ' ';
+}
+
+void Maze::solve()
+{
+	Queue tor;
+	int *cur,*temp;
+	bool flag = true;
+	int h, w;
+
+
+	cur = new int[2];
+	cur[0] = 1;
+	cur[1] = 0;
+
+	tor.EnQueue(cur);
+
+	while (!tor.isEmpty() && flag)
+	{
+		temp = tor.DeQueue();
+		this->maze[temp[0]][temp[1]] = '$';
+		if (temp[0] == this->getHight() - 2 && temp[1] == this->getWidth() - 1)
+			flag = false;
+		else
+		{
+			h = cur[0];
+			w = cur[1];
+			if (((w + 1) < (this->getWidth() - 1)) && (this->maze[h][w + 1] == ' ')) //right
+			{
+				cur = new int[2];
+				cur[0] = h;
+				cur[1] = w+1;
+				tor.EnQueue(cur);
+
+			}
+			if (((h + 1) < this->getHight() - 1) && (this->maze[h + 1][w] == ' ')) //down
+			{
+				cur = new int[2];
+				cur[0] = h + 1;
+				cur[1] = w;
+				tor.EnQueue(cur);
+			}
+			if (((w - 1) > 0) && (this->maze[h][w - 1] == ' '))//left
+			{
+				cur = new int[2];
+				cur[0] = h;
+				cur[1] = w -1;
+				tor.EnQueue(cur);
+			}
+		
+			if (((h - 1) > 0) && (this->maze[h - 1][w] == ' ')) //up
+			{
+				cur = new int[2];
+				cur[0] = h-1;
+				cur[1] = w;
+				tor.EnQueue(cur);
+			}
+		}
+	}
+
+
 }
 
 void Maze::print()
@@ -186,5 +248,7 @@ int Maze::getWidth()
 {
 	return (this->width);
 }
+
+
 
 

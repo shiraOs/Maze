@@ -9,13 +9,15 @@ using namespace std;
 
 const int MAX_SIZE = 2050;
 
+
 class Queue
 {
 
 private:
 	int head;
 	int tail;
-	char data[MAX_SIZE];
+	int* data[MAX_SIZE];
+	
 
 	static int AddOne(int x);
 
@@ -28,9 +30,9 @@ public:
 
 	void MakeEmpty();
 	bool isEmpty();
-	char front();
-	void EnQueue(char item);
-	char DeQueue();
+	int* front();
+	void EnQueue(int* item);
+	int* DeQueue();
 
 
 };
