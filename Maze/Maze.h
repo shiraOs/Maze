@@ -23,6 +23,9 @@ public:
 	Maze(int hight,int width);
 	~Maze();
 
+	int getHight();
+	int getWidth();
+
 	bool setHight(int hight);
 	bool setWidth(int width);
 
