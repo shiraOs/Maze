@@ -55,7 +55,7 @@ Maze::~Maze()
 
 bool Maze::setHight(int hight)
 {
-	if (hight > 25 && hight < 4)
+	if ((hight > 25 && hight < 4) && hight % 2 != 0)
 	{
 		cout << "not good mate........" << endl;
 		return false;
@@ -68,7 +68,7 @@ bool Maze::setHight(int hight)
 
 bool Maze::setWidth(int width)
 {
-	if (width > 80 && width < 4)
+	if ((width > 80 && width < 4) && width % 2 != 0)
 	{
 		cout << "not good mate........" << endl;
 		return false;
