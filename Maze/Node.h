@@ -12,9 +12,10 @@ class Node
 public:
 	Node();
 	~Node();
-	char data;
+	//char data;
+	int data[2]; // data[0]=row, data[1]=col :)
 	Node* next;
-	Node(char item, Node* ptr = nullptr);
+	Node(int* data, Node* ptr = nullptr);
 	void InsertAfter(Node* newNode);
 	Node* DeleteAfter();
 };

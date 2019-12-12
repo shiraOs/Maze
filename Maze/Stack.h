@@ -19,9 +19,9 @@ public:
 	~Stack();
 	void MakeEmpty();
 	bool IsEmpty();
-	void Push(char item);
-	char Pop();
-	char Top();
+	void Push(int *data);
+	int* Pop();
+	int* Top();
 };
 
 #endif //_STACK_H

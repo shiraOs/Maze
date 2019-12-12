@@ -10,9 +10,10 @@ Node::~Node()
 {
 }
 
-Node::Node(char item, Node * ptr)
+Node::Node(int* data, Node* ptr = nullptr)
 {
-	data = item;
+	this->data[0] = data[0];
+	this->data[1] = data[1];
 	next = ptr;
 }
 

@@ -26,26 +26,29 @@ bool Stack::IsEmpty()
 	return (top == nullptr);
 }
 
-void Stack::Push(char item)
+void Stack::Push(int* data)
 {
-	top = new Node(item, top);
+	top = new Node(data, top);
 }
 
-char Stack::Pop()
+int* Stack::Pop()
 {
+	int item[2];
 	if (IsEmpty())
 	{
 		cout << "Eror: STACK OVERFLOW!!!" << endl;
 		exit(4);
 	}
 	Node* temp = top;
-	char item = top->data;
+
+	item[0] = top->data[0];
+	item[1] = top->data[1];
 	top = top->next;
 	delete temp;
 	return item;
 }
 
-char Stack::Top()
+int* Stack::Top()
 {
 	return top->data;
 }

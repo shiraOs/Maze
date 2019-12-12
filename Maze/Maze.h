@@ -26,6 +26,8 @@ public:
 	bool setHight(int hight);
 	bool setWidth(int width);
 
+	void create(Maze shira);
+
 	void print();
 };
 

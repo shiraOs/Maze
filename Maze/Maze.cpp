@@ -7,41 +7,40 @@ Maze::Maze(int hight, int width)
 	int i, j;
 	if (setHight(hight) && setWidth(width))
 	{
-		maze = new char*[width];
+		maze = new char*[hight];
 		//check alloction
 
-		for (i = 0; i < width; i++)
-			maze[i] = new char[hight];
+		for (i = 0; i < hight; i++)
+			maze[i] = new char[width];
 
-		for (i = 0; i < width; i++)
+		for (i = 0; i < hight; i++)
 		{
-			for (j = 0; j < hight; j++)
+			for (j = 0; j < width; j++)
 			{
-				if ((i == 0) || (j == 0) || (i == width - 1) || (j = hight - 1))
+				//if ((i == 0) || (j == 0) || (i == hight - 1) || (j == width - 1))
+				//	maze[i][j] = '*';
+				//else
+				//{
+				//	if (i % 2 != 0)//uneven
+				//	{
+				//		if (j % 2 == 0)
+				//			maze[i][j] = '*';
+				//		else
+				//			maze[i][j] = ' ';
+				//	}
+				//	else
+				//		maze[i][j] = '*';
+				//}
+				if ((i == hight - 1) || (j == width - 1) || (i % 2 == 0) || (j % 2 == 0))
 					maze[i][j] = '*';
-					
 				else
-				{
-					if (i % 0 != 0)//uneven
-					{
-						if(j%0==0)
-							maze[i][j] = '*';
-						else
-							maze[i][j] = ' ';
-
-					}
-					else
-					{
-						maze[i][j] = '*';					
-					}
-				}
+					maze[i][j] = ' ';
+				
 			}
 		}
 		maze[1][0] = ' ';
-		maze[hight - 2][width - 2] = ' ';
-
+		maze[hight - 2][width - 1] = ' ';
 	}
-
 }
 
 
@@ -77,6 +76,25 @@ bool Maze::setWidth(int width)
 
 	this->width = width;
 	return true;
+}
+
+void Maze::create(Maze shira)
+{
+	Stack s1; 
+	char temp;
+	int h, w;
+
+	h = 1;
+	w = 1;
+
+	s1.Push(shira.maze[h][w]);
+
+	while (!s1.IsEmpty())
+	{
+		temp = s1.Pop();
+	}
+
+	
 }
 
 void Maze::print()
