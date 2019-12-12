@@ -32,6 +32,8 @@ public:
 
 	void create();
 	void solve();
+	bool buildMaze();
+	bool checkMaze();
 
 	void print();
 };

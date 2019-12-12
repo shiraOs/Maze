@@ -231,9 +231,63 @@ void Maze::solve()
 
 }
 
+bool Maze::buildMaze()
+{
+	char r[81];
+	char ch;
+	int i, j;
+	for (i = 0; i < this->getHight(); i++)
+	{
+		cout << "Entner row num " << i << endl;
+		cin.getline(r, 80);
+		r[80] = '\0';
+		for (j = 0; j < this->getWidth(); j++)
+			if (r[j] != ' ' && r[j] != '*')
+				return false;
+			else if (r[j] == ' ')
+				this->maze[i][j] = ' ';
+			else if (r[j] == '*')
+				this->maze[i][j] = '*';
+	}
+	if (this->checkMaze())
+		return true;
+	return false;
+}
+
+bool Maze::checkMaze()
+{
+	bool res = true;
+	int i;
+	
+	for (i = 0; i < this->width; i++)
+	{
+		if (maze[0][i] != '*')
+			return false;
+		if (maze[this->hight-1][i] != '*')
+			return false;
+	}
+
+	for (i = 0; i < this->hight; i++)
+	{
+		if (maze[i][0] != '*')
+			return false;
+		else
+			if (!(i == 1 && maze[i][0] != ' '))
+				return false;
+		if (maze[i][this->width - 1] != '*')
+			return false;
+		else
+			if (!((i == hight - 2) && maze[i][width - 1] != ' '))
+				return false;
+	}
+	return res;
+}
+
 void Maze::print()
 {
 	int i, j;
+
+
 	for (i = 0; i < hight; i++)
 	{
 		for (j = 0; j < width; j++)
