@@ -10,6 +10,7 @@ Queue::Queue()
 
 Queue::~Queue()
 {
+	//dtor
 }
 
 void Queue::MakeEmpty()
