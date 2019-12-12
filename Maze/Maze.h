@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <stdlib.h>
+#include <time.h>
 #include "Queue.h"
 #include "Stack.h"
 
@@ -29,7 +30,7 @@ public:
 	bool setHight(int hight);
 	bool setWidth(int width);
 
-	void create(Maze shira);
+	void create();
 
 	void print();
 };

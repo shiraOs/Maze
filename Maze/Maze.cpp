@@ -78,23 +78,20 @@ bool Maze::setWidth(int width)
 	return true;
 }
 
-void Maze::create(Maze shira)
+void Maze::create()
 {
 	Stack s1; 
 	int temp[2],right[2],left[2],down[2],up[2];
 	int* k;
+	int kgo[2]; 
 	int h, w,count,rad;
 	int* path[4];
-
-
+	
 	h = 1;
 	w = 1;
-
+	srand((unsigned)time(NULL));
 	temp[0] = h;
 	temp[1] = w;
-
-	
-
 	s1.Push(temp);
 
 	while (!s1.IsEmpty())
@@ -103,50 +100,66 @@ void Maze::create(Maze shira)
 		k = s1.Pop();
 		h = k[0];
 		w = k[1];
-		shira.maze[h][w] = '$';	
-
-		if (((w + 2) < (shira.getWidth() - 1)) && (shira.maze[h][w + 2] == ' '))
+		this->maze[h][w] = '$';
+		if (((w + 2) < (this->getWidth() - 1)) && (this->maze[h][w + 2] == ' ')) //right
 		{
 			right[0] = h;
 			right[1] = w + 2;
 			path[count] = right;
 			count++;
-			
+
 		}
-		if (((w - 2) > 0) && (shira.maze[h][w - 2] == ' '))
+		if (((w - 2) > 0) && (this->maze[h][w - 2] == ' '))//left
 		{
 			left[0] = h;
-			left[1] = w -2;
+			left[1] = w - 2;
 			path[count] = left;
 			count++;
 		}
-		if (((h + 2) < shira.getHight() - 1) && (shira.maze[h + 2][w] == ' '))
+		if (((h + 2) < this->getHight() - 1) && (this->maze[h + 2][w] == ' ')) //down
 		{
 			down[0] = h + 2;
 			down[1] = w;
 			path[count] = down;
 			count++;
 		}
-		if (((h - 2) > 0) && (shira.maze[h - 2][w] == ' '))
+		if (((h - 2) > 0) && (this->maze[h - 2][w] == ' ')) //up
 		{
 			up[0] = h - 2;
 			up[1] = w;
 			path[count] = up;
 			count++;
 		}
-		
-		rad = rand() % count;
-		temp[0] = path[rad][0];
-		temp[1] = path[rad][1];
+		//-----------------
+		if (count != 0)
+		{
+			kgo[0] = k[0];
+			kgo[1] = k[1];
+			rad = rand() % count;
+			temp[0] = path[rad][0];
+			temp[1] = path[rad][1];
 
-		if (temp[1] == w + 2) //if right
-			shira.maze[h][w + 1] = ' ';
+			if (temp[1] == w + 2) //if right
+				this->maze[h][w + 1] = ' ';
+			else if (temp[1] == w - 2) // if left
+				this->maze[h][w - 1] = ' ';
+			else if (temp[0] == h + 2) //if down
+				this->maze[h + 1][w] = ' ';
+			else
+				this->maze[h - 1][w] = ' '; //if up
+
+			s1.Push(kgo);
+			s1.Push(temp);
+		}
+			
+		this->print();
 
 
-
-	}
-
-	
+	}		
+	for (int i = 0; i < hight; i++)
+		for (int j = 0; j < width; j++)
+			if (this->maze[i][j] == '$')
+				this->maze[i][j] = ' ';
 }
 
 void Maze::print()
