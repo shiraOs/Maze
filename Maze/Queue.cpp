@@ -63,7 +63,7 @@ char Queue::DeQueue()
 
 int Queue::AddOne(int x)
 {
-	return ((1+x)%MAX_SIZE)
+	return ((1 + x) % MAX_SIZE);
 }
 
 //
