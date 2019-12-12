@@ -182,13 +182,16 @@ void Maze::solve()
 	{
 		temp = tor.DeQueue();
 		this->maze[temp[0]][temp[1]] = '$';
-		if (temp[0] == this->getHight() - 2 && temp[1] == this->getWidth() - 1)
+		if ((temp[0] == this->getHight()) - 2 && temp[1] == (this->getWidth() - 1))
+		{
 			flag = false;
+			this->maze[hight - 2][width - 1] = '$';
+		}
 		else
 		{
-			h = cur[0];
-			w = cur[1];
-			if (((w + 1) < (this->getWidth() - 1)) && (this->maze[h][w + 1] == ' ')) //right
+			h = temp[0];
+			w = temp[1];
+			if (((w + 1) <= (this->getWidth() - 1)) && (this->maze[h][w + 1] == ' ')) //right
 			{
 				cur = new int[2];
 				cur[0] = h;
@@ -219,7 +222,11 @@ void Maze::solve()
 				tor.EnQueue(cur);
 			}
 		}
+		cout << endl;
+		this->print();
 	}
+
+	
 
 
 }

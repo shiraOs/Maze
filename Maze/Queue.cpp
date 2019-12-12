@@ -3,8 +3,10 @@
 
 Queue::Queue()
 {
-	head = 1;
-	tail = 0;
+	this->head = 1;
+	this->tail = 0;
+	for (int i = 0; i < MAX_SIZE; i++)
+		this->data[i] = nullptr;
 }
 
 
