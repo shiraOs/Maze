@@ -234,22 +234,24 @@ void Maze::solve()
 bool Maze::buildMaze()
 {
 
-
+	bool res = true;
 	char r[81];
 	char ch;
 	int i, j;
 	for (i = 0; i < this->getHight(); i++)
 	{
 		cin.getline(r, 80);
-		r[80] = '\0';
+		
 		for (j = 0; j < this->getWidth(); j++)
 			if (r[j] != ' ' && r[j] != '*')
-				return false;
+				res = false;
 			else if (r[j] == ' ')
 				this->maze[i][j] = ' ';
 			else if (r[j] == '*')
 				this->maze[i][j] = '*';
 	}
+
+	if (res)
 	if (this->checkMaze())
 		return true;
 	return false;
@@ -270,16 +272,18 @@ bool Maze::checkMaze()
 
 	for (i = 0; i < this->hight; i++)
 	{
-		if (maze[i][0] != '*')
+		if ((maze[i][0] != '*') && (maze[i][0] != ' '))
 			return false;
 		else
-			if (!(i == 1 && maze[i][0] != ' '))
-				return false;
-		if (maze[i][this->width - 1] != '*')
+			if (i == 1)
+				if (maze[i][0] != ' ')
+					return false;
+		if ((maze[i][this->width - 1] != '*') && (maze[i][this->width - 1] != ' '))
 			return false;
 		else
-			if (!((i == hight - 2) && maze[i][width - 1] != ' '))
-				return false;
+			if (i == hight - 2)
+				if (maze[i][width - 1] != ' ')
+					return false;
 	}
 	return res;
 }
