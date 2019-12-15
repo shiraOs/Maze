@@ -233,12 +233,13 @@ void Maze::solve()
 
 bool Maze::buildMaze()
 {
+
+
 	char r[81];
 	char ch;
 	int i, j;
 	for (i = 0; i < this->getHight(); i++)
 	{
-		cout << "Entner row num " << i << endl;
 		cin.getline(r, 80);
 		r[80] = '\0';
 		for (j = 0; j < this->getWidth(); j++)

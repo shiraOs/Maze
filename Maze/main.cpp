@@ -1,23 +1,45 @@
 #include "Maze.h"
 
 
-void main()
+int main()
 {
+
 	int choice, h, w;
-	cout << "What do you want? \n 1. Build your own maze \n 2. Costumase maze\n";
+
+
+	cout << "Maze: 1) From input 2) Random" << endl;
+
 	cin >> choice;
-	cout << "Enter maze's hight: ";
+
 	cin >> h;
-	cout << "\nEnter maze's width: ";
+
 	cin >> w;
 	cout << endl;
+
 	Maze shira(h, w);
 
-	if (choice == 1)
-		shira.buildMaze();
-	else if (choice != 2)
-		exit(5);
 
-	shira.print();
-	system("pause");
+	if (choice == 1)
+	{
+		if (!shira.buildMaze())
+			cout << "no solution" << endl;
+		else
+		{
+			shira.solve();
+			shira.print();
+		}
+	}
+	else
+		if (choice != 2)
+			exit(5);
+		else
+		{
+			shira.create();
+			shira.solve();
+			shira.print();
+		}
+
+	
+	
+	
 }
