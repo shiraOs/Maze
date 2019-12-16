@@ -46,11 +46,11 @@ Maze::Maze(int hight, int width)
 
 Maze::~Maze()
 {
-	int i;
+	/*int i;
 	for (i = 0; i < width; i++)
-		delete  maze[i];
+		delete  maze[i];*/
 
-	delete[] maze;
+	//delete[] maze;
 }
 
 bool Maze::setHight(int hight)
@@ -164,7 +164,7 @@ void Maze::create()
 				this->maze[i][j] = ' ';
 }
 
-void Maze::solve()
+bool Maze::solve()
 {
 	Queue tor;
 	int *cur,*temp;
@@ -222,9 +222,13 @@ void Maze::solve()
 				tor.EnQueue(cur);
 			}
 		}
-		cout << endl;
-		this->print();
+		//cout << endl;
+		//this->print();
 	}
+	if (this->maze[hight - 2][width - 1] == '$')
+		return true;
+	else
+		return false; //:)
 
 	
 
@@ -234,24 +238,25 @@ void Maze::solve()
 bool Maze::buildMaze()
 {
 
-	bool res = true;
 	char r[81];
 	char ch;
 	int i, j;
+	cin.ignore();
 	for (i = 0; i < this->getHight(); i++)
 	{
 		cin.getline(r, 80);
-		
+		if (strlen(r) != this->getWidth())
+			return false; //:)
 		for (j = 0; j < this->getWidth(); j++)
-			if (r[j] != ' ' && r[j] != '*')
-				res = false;
-			else if (r[j] == ' ')
+			if (r[j] == ' ')
 				this->maze[i][j] = ' ';
 			else if (r[j] == '*')
 				this->maze[i][j] = '*';
+			else
+				return false; //bad input
 	}
-
-	if (res)
+	
+	
 	if (this->checkMaze())
 		return true;
 	return false;
@@ -260,31 +265,50 @@ bool Maze::buildMaze()
 bool Maze::checkMaze()
 {
 	bool res = true;
-	int i;
+	int i,j;
 	
-	for (i = 0; i < this->width; i++)
-	{
-		if (maze[0][i] != '*')
+	if ((maze[1][0] != ' ') &&(maze[hight-2][width-1] !=' ')) //enter and exit points
 			return false;
-		if (maze[this->hight-1][i] != '*')
-			return false;
-	}
 
 	for (i = 0; i < this->hight; i++)
 	{
+		for (j = 0; j < this->width; j++)
+		{
+			if ((maze[i][j] != '*') && (maze[i][j] != ' ')) //bad input
+				return false;
+
+			if (maze[0][j] != '*')//first row
+				return false;
+			if (maze[this->hight - 1][j] != '*') // last row
+				return false;
+
+					
+		}
+
+		if (maze[i][0] != '*')
+			if (i != 1) // only enter point allowed not to be * 
+				return false;
+		if (maze[i][width - 1] != '*')
+			if (i != hight - 2) // only enter point allowed not to be * 
+				return false;
+		
+	}
+	/*
+	for (i = 0; i < this->width; i++)
+	{
 		if ((maze[i][0] != '*') && (maze[i][0] != ' '))
 			return false;
-		else
-			if (i == 1)
-				if (maze[i][0] != ' ')
-					return false;
+		if (i == 1)
+			if (maze[i][0] != ' ')
+				return false;
 		if ((maze[i][this->width - 1] != '*') && (maze[i][this->width - 1] != ' '))
 			return false;
-		else
-			if (i == hight - 2)
-				if (maze[i][width - 1] != ' ')
-					return false;
+
+		if (i == hight - 2)
+			if (maze[i][width - 1] != ' ')
+				return false;
 	}
+	*/
 	return res;
 }
 

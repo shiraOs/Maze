@@ -21,12 +21,14 @@ int main()
 
 	if (choice == 1)
 	{
-		if (!shira.buildMaze())
-			cout << "no solution" << endl;
+		if (shira.buildMaze()==false)
+			cout << "invalid input" << endl;
 		else
 		{
-			shira.solve();
-			shira.print();
+			if (shira.solve())
+				shira.print();
+			else
+				cout << "no solution";
 		}
 	}
 	else
@@ -35,8 +37,10 @@ int main()
 		else
 		{
 			shira.create();
-			shira.solve();
-			shira.print();
+			if (shira.solve())
+				shira.print();
+			else
+				cout << "no solution"; //:)
 		}
 
 	
