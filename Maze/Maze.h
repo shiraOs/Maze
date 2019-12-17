@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 #include "Queue.h"
 #include "Stack.h"
 
@@ -31,7 +32,7 @@ public:
 	bool setWidth(int width);
 
 	void create();
-	void solve();
+	bool solve();
 	bool buildMaze();
 	bool checkMaze();
 
