@@ -42,25 +42,12 @@ Maze::~Maze()
 
 bool Maze::setHight(int hight)
 {
-	if ((hight > 25 && hight < 4) || hight % 2 == 0)
-	{
-		cout << "Hight needs to be an un-even number between 3-25" << endl;
-		return false;
-	}
-
 	this->hight = hight;
 	return true;
-
 }
 
 bool Maze::setWidth(int width)
 {
-	if ((width > 80 && width < 4) || width % 2 == 0)
-	{
-		cout << "Width needs to be an un-even number between 3-80" << endl;
-		return false;
-	}
-
 	this->width = width;
 	return true;
 }
@@ -227,33 +214,33 @@ bool Maze::solve()
 //checks if it good and return if so
 bool Maze::buildMaze()
 {
-
 	char r[81];
-	char ch;
 	int i, j;
 	cin.ignore();
+
 	for (i = 0; i < this->getHight(); i++)
 	{
 		cin.getline(r, 80);
-		if (strlen(r) != this->getWidth())
-			return false; //:)
+		if (strlen(r) != this->getWidth())		//lines not in same length
+			return false; 
+
 		for (j = 0; j < this->getWidth(); j++)
 			if (r[j] == ' ')
 				this->maze[i][j] = ' ';
 			else if (r[j] == '*')
 				this->maze[i][j] = '*';
 			else
-				return false; //bad input
+				return false; //bad input, signes other then * or space
 	}
-
 
 	if (this->checkMaze())
 		return true;
+
 	return false;
 }
 
 //check if maze is good, meaning : only '*' and 'space' char are allawoed
-//the perimeter most be only * and an opening point at 1,0 and h-2,w-1
+//the frame can consists only * and an opening point at 1,0 and exit point at h-2,w-1.
 bool Maze::checkMaze()
 {
 	bool res = true;
@@ -262,28 +249,21 @@ bool Maze::checkMaze()
 	if ((maze[1][0] != ' ') && (maze[hight - 2][width - 1] != ' ')) //enter and exit points
 		return false;
 
-	for (i = 0; i < this->hight; i++)
+	for (i = 0; i < this->hight; i++)		//check frame
 	{
-		for (j = 0; j < this->width; j++)
+		for (j = 0; j < this->width; j++)	
 		{
-			if ((maze[i][j] != '*') && (maze[i][j] != ' ')) //bad input
-				return false;
 
-			if (maze[0][j] != '*')//first row
+			if (maze[0][j] != '*')					//first row
 				return false;
-			if (maze[this->hight - 1][j] != '*') // last row
+			if (maze[this->hight - 1][j] != '*')	// last row
 				return false;
-
-
 		}
 
-		if (maze[i][0] != '*')
-			if (i != 1) // only enter point allowed not to be * 
-				return false;
-		if (maze[i][width - 1] != '*')
-			if (i != hight - 2) // only enter point allowed not to be * 
-				return false;
-
+		if (maze[i][0] != '*' && i != 1)			//first col except from enter point 1,0
+			return false;
+		if (maze[i][width - 1] != '*' && i != hight - 2)				//last col except frmo exit point h-2,w-1
+			return false;
 	}
 
 	return res;
@@ -293,7 +273,6 @@ bool Maze::checkMaze()
 void Maze::print()
 {
 	int i, j;
-
 
 	for (i = 0; i < hight; i++)
 	{
