@@ -2,32 +2,34 @@
 
 
 //ctor for maze
+//put it at maze only if its good - if you dont follow the rules its the biggest maze
 Maze::Maze(int hight, int width)
 {
 	int i, j;
-	if (setHight(hight) && setWidth(width))
+	setHight(hight);
+	setWidth(width); //put it at maze only if its good - if you dont follow the rules its the biggest maze
+
+		maze = new char*[this->hight];
+	if (!maze)
+		exit(-100);
+
+	for (i = 0; i < this->hight; i++)
+		maze[i] = new char[this->width];
+
+	for (i = 0; i < this->hight; i++)
 	{
-		maze = new char*[hight]; 
-		if (!maze)
-			exit(-100);
-
-		for (i = 0; i < hight; i++)
-			maze[i] = new char[width];
-
-		for (i = 0; i < hight; i++)
+		for (j = 0; j < this->width; j++)
 		{
-			for (j = 0; j < width; j++)
-			{
-			  if ((i == hight - 1) || (j == width - 1) || (i % 2 == 0) || (j % 2 == 0))
-					maze[i][j] = '*';
-				else
-					maze[i][j] = ' ';
-				
-			}
+			if ((i == this->hight - 1) || (j == this->width - 1) || (i % 2 == 0) || (j % 2 == 0))
+				maze[i][j] = '*';
+			else
+				maze[i][j] = ' ';
+
 		}
-		maze[1][0] = ' ';
-		maze[hight - 2][width - 1] = ' ';
 	}
+	maze[1][0] = ' ';
+	maze[this->hight - 2][this->width - 1] = ' ';
+
 }
 
 //d'tor for maze
@@ -40,12 +42,13 @@ Maze::~Maze()
 	delete[] maze;
 }
 
-
+//if you enter bad higth widht defalt is 79
 bool Maze::setHight(int hight)
 {
 	if ((hight > 25 && hight < 4) || hight % 2 == 0)
 	{
 		cout << "Hight needs to be an un-even number between 3-25" << endl;
+		this->hight = 19;
 		return false;
 	}
 
@@ -54,11 +57,13 @@ bool Maze::setHight(int hight)
 
 }
 
+//if you enter bad input widht defalt is 9
 bool Maze::setWidth(int width)
 {
 	if ((width > 80 && width < 4) || width % 2 == 0)
 	{
 		cout << "Width needs to be an un-even number between 3-80" << endl;
+		this->width = 79;
 		return false;
 	}
 
