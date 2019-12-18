@@ -5,3 +5,6 @@
 אלון בן הרוש 312533698 קבוצה ב'
 
 שירה אוסטרינסקי 311119002 קבוצה ב
+
+Alon Ben Harosh 312533698 bet group 
+Shira ostrinsky 311119002 bet group
