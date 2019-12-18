@@ -1,7 +1,6 @@
 #include "Maze.h"
 
 //ctor for maze
-//put it at maze only if its good - if you dont follow the rules its the biggest maze
 Maze::Maze(int hight, int width)
 {
 	int i, j;
@@ -42,12 +41,25 @@ Maze::~Maze()
 
 bool Maze::setHight(int hight)
 {
+
+	if ((hight > 25 && hight < 4) || hight % 2 == 0)
+	{
+		cout << "Hight needs to be an un-even number between 3-25" << endl;
+		return false;
+	}
+
 	this->hight = hight;
 	return true;
 }
 
 bool Maze::setWidth(int width)
 {
+	if ((width > 80 && width < 4) || width % 2 == 0)
+	{
+		cout << "Width needs to be an un-even number between 3-80" << endl;
+		return false;
+	}
+
 	this->width = width;
 	return true;
 }
@@ -58,7 +70,7 @@ void Maze::create()
 	Stack s1;
 	int temp[2], right[2], left[2], down[2], up[2];
 	int* k;
-	int kgo[2];
+	//int kgo[2];
 	int h, w, count, rad;
 	int* path[4];
 
@@ -109,8 +121,8 @@ void Maze::create()
 		//-----------------
 		if (count != 0)
 		{
-			kgo[0] = k[0];
-			kgo[1] = k[1]; //because rand delete k from some reason ?????
+			//kgo[0] = k[0];
+		//	kgo[1] = k[1]; //because rand delete k from some reason ?????
 			rad = rand() % count;
 			temp[0] = path[rad][0];
 			temp[1] = path[rad][1];
@@ -124,12 +136,9 @@ void Maze::create()
 			else
 				this->maze[h - 1][w] = ' '; //if up
 
-			s1.Push(kgo);
+			s1.Push(k);
 			s1.Push(temp);
 		}
-
-
-
 	}
 	for (int i = 0; i < hight; i++)
 		for (int j = 0; j < width; j++)

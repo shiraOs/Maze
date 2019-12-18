@@ -33,16 +33,19 @@ void Stack::Push(int* data)
 
 int* Stack::Pop()
 {
-	int item[2];
+	/*int* item;
+	item = new int[2];*/
+
 	if (IsEmpty())
 	{
 		cout << "Eror: STACK OVERFLOW!!!" << endl;
 		exit(4);
 	}
+	
 	Node* temp = top;
-
-	item[0] = top->data[0];
-	item[1] = top->data[1];
+	int* item = top->data;
+	//item[0] = top->data[0];
+	//item[1] = top->data[1];
 	top = top->next;
 	delete temp;
 	return item;

@@ -12,7 +12,6 @@ class Node
 public:
 	Node();
 	~Node();
-	//char data;
 	int data[2]; // data[0]=row, data[1]=col :)
 	Node* next;
 	Node(int* data, Node* ptr = nullptr);
