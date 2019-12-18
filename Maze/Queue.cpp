@@ -68,6 +68,3 @@ int Queue::AddOne(int x)
 {
 	return ((1 + x) % MAX_SIZE);
 }
-
-//
-

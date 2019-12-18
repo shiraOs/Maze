@@ -10,11 +10,11 @@ using namespace std;
 class Node
 {
 public:
-	Node();
-	~Node();
-	int data[2]; // data[0]=row, data[1]=col :)
+	int data[2];			//data[0]=row, data[1]=col
 	Node* next;
-	Node(int* data, Node* ptr = nullptr);
+	Node();					//empty c'tor
+	~Node();				//d'tor
+	Node(int* data, Node* ptr = nullptr);		//copy c'tor
 	void InsertAfter(Node* newNode);
 	Node* DeleteAfter();
 };

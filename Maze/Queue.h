@@ -17,10 +17,8 @@ private:
 	int head;
 	int tail;
 	int* data[MAX_SIZE];
-	
 
 	static int AddOne(int x);
-
 
 public:
 

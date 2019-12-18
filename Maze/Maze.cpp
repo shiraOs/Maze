@@ -7,7 +7,6 @@ Maze::Maze(int hight, int width)
 	if (setHight(hight) && setWidth(width))
 	{
 		maze = new char*[hight];
-		//check alloction
 
 		for (i = 0; i < hight; i++)
 			maze[i] = new char[width];
@@ -23,6 +22,7 @@ Maze::Maze(int hight, int width)
 
 			}
 		}
+
 		maze[1][0] = ' ';
 		maze[hight - 2][width - 1] = ' ';
 	}
@@ -38,11 +38,19 @@ Maze::~Maze()
 	delete[] maze;
 }
 
+int Maze::getHight()
+{
+	return (this->hight);
+}
+
+int Maze::getWidth()
+{
+	return (this->width);
+}
 
 bool Maze::setHight(int hight)
-{
-
-	if ((hight > 25 && hight < 4) || hight % 2 == 0)
+{//for other main, checks the input.
+	if ((hight > MAX_HIGHT && hight < 4) || hight % 2 == 0)
 	{
 		cout << "Hight needs to be an un-even number between 3-25" << endl;
 		return false;
@@ -53,8 +61,8 @@ bool Maze::setHight(int hight)
 }
 
 bool Maze::setWidth(int width)
-{
-	if ((width > 80 && width < 4) || width % 2 == 0)
+{//for other main, checks the input.
+	if ((width > MAX_WIDTH && width < 4) || width % 2 == 0)
 	{
 		cout << "Width needs to be an un-even number between 3-80" << endl;
 		return false;
@@ -64,224 +72,214 @@ bool Maze::setWidth(int width)
 	return true;
 }
 
-//Creat a random maze by using stack
 void Maze::create()
-{
+{//Creat a random maze by using stack
 	Stack s1;
-	int temp[2], right[2], left[2], down[2], up[2];
-	int* k;
-	//int kgo[2];
-	int h, w, count, rad;
+	int currMove[2], right[2], left[2], down[2], up[2];
+	int* nextMove;
+	int row, col, countRand, randValue;
 	int* path[4];
 
-	h = 1;
-	w = 1;
+	row = 1;
+	col = 1;
 	srand((unsigned)time(NULL));
-	temp[0] = h;
-	temp[1] = w;
-	s1.Push(temp);
+	currMove[0] = row;
+	currMove[1] = col;
+	s1.Push(currMove);
 
 	while (!s1.IsEmpty())
 	{
-		right[0] = right[1] = left[0] = left[1] = up[0] = up[1] = down[0] = down[1] = count = 0;
-		k = s1.Pop();
-		h = k[0];
-		w = k[1];
-		this->maze[h][w] = '$';
-		if (((w + 2) < (this->getWidth() - 1)) && (this->maze[h][w + 2] == ' ')) //right
+		countRand = 0;										//count to know how many possible moves there are
+		right[0] = right[1] = left[0] = left[1] = up[0] = up[1] = down[0] = down[1] = 0;	//reset all moves
+		nextMove = s1.Pop();								//get the next move
+		row = nextMove[0];
+		col = nextMove[1];
+		this->maze[row][col] = '$';							//mark for visit there
+		if (((col + 2) < (this->getWidth() - 1)) && (this->maze[row][col + 2] == ' ')) //check move right
 		{
-			right[0] = h;
-			right[1] = w + 2;
-			path[count] = right;
-			count++;
+			right[0] = row;
+			right[1] = col + 2;
+			path[countRand] = right;
+			countRand++;
 
 		}
-		if (((h + 2) < this->getHight() - 1) && (this->maze[h + 2][w] == ' ')) //down
+		if (((row + 2) < this->getHight() - 1) && (this->maze[row + 2][col] == ' ')) //check move down
 		{
-			down[0] = h + 2;
-			down[1] = w;
-			path[count] = down;
-			count++;
+			down[0] = row + 2;
+			down[1] = col;
+			path[countRand] = down;
+			countRand++;
 		}
-		if (((w - 2) > 0) && (this->maze[h][w - 2] == ' '))//left
+		if (((col - 2) > 0) && (this->maze[row][col - 2] == ' '))	//check move left
 		{
-			left[0] = h;
-			left[1] = w - 2;
-			path[count] = left;
-			count++;
+			left[0] = row;
+			left[1] = col - 2;
+			path[countRand] = left;
+			countRand++;
 		}
 
-		if (((h - 2) > 0) && (this->maze[h - 2][w] == ' ')) //up
+		if (((row - 2) > 0) && (this->maze[row - 2][col] == ' ')) //check move up
 		{
-			up[0] = h - 2;
-			up[1] = w;
-			path[count] = up;
-			count++;
+			up[0] = row - 2;
+			up[1] = col;
+			path[countRand] = up;
+			countRand++;
 		}
-		//-----------------
-		if (count != 0)
-		{
-			//kgo[0] = k[0];
-		//	kgo[1] = k[1]; //because rand delete k from some reason ?????
-			rad = rand() % count;
-			temp[0] = path[rad][0];
-			temp[1] = path[rad][1];
+		
+		if (countRand != 0)
+		{//there are moves
+			randValue = rand() % countRand;
+			currMove[0] = path[randValue][0];
+			currMove[1] = path[randValue][1];
 
-			if (temp[1] == w + 2) //if right
-				this->maze[h][w + 1] = ' ';
-			else if (temp[1] == w - 2) // if left
-				this->maze[h][w - 1] = ' ';
-			else if (temp[0] == h + 2) //if down
-				this->maze[h + 1][w] = ' ';
+			if (currMove[1] == col + 2)				//move right
+				this->maze[row][col + 1] = ' ';
+			else if (currMove[1] == col - 2)		//move left
+				this->maze[row][col - 1] = ' ';
+			else if (currMove[0] == row + 2)		//move down
+				this->maze[row + 1][col] = ' ';
 			else
-				this->maze[h - 1][w] = ' '; //if up
+				this->maze[row - 1][col] = ' ';		//move up
 
-			s1.Push(k);
-			s1.Push(temp);
-			delete k;
+			s1.Push(nextMove);						//push next move
+			s1.Push(currMove);						//push curr move
+			delete[] nextMove;
 		}
 	}
 	for (int i = 0; i < hight; i++)
 		for (int j = 0; j < width; j++)
 			if (this->maze[i][j] == '$')
-				this->maze[i][j] = ' ';
+				this->maze[i][j] = ' ';				//put space all places visit so maze will be empty to solve
 }
 
-//Solve the maze using queue
-//retun true if solve, false otherwise
+
 bool Maze::solve()
-{
+{//Solve the maze using queue, retun true if solve, false otherwise
 	Queue tor;
-	int *cur, *temp;
+	int *currMove, *nextMove;
 	bool flag = true;
-	int h, w;
+	int row, col;
 
+	nextMove = new int[2];
+	nextMove[0] = 1;							//enter point (1,0)
+	nextMove[1] = 0;							//enter point (1,0)
 
-	cur = new int[2];
-	cur[0] = 1;
-	cur[1] = 0;
+	tor.EnQueue(nextMove);						//push next move, start point
 
-	tor.EnQueue(cur);
-
-	while (!tor.isEmpty() && flag)
+	while (!tor.isEmpty() && flag)				//as long as there are move
 	{
-		temp = tor.DeQueue();
-		this->maze[temp[0]][temp[1]] = '$';
-		if ((temp[0] == this->getHight()) - 2 && temp[1] == (this->getWidth() - 1))
-		{
+		currMove = tor.DeQueue();
+		row = currMove[0];			//get point to move
+		col = currMove[1];			//get point to move
+		this->maze[row][col] = '$';		//marking for visit
+
+		if ((row == (this->getHight() - 2)) && (col == (this->getWidth() - 1)))
+		{//check if exit point
 			flag = false;
-			this->maze[hight - 2][width - 1] = '$';
+			this->maze[row][col] = '$';
 		}
 		else
 		{
-			h = temp[0];
-			w = temp[1];
-			if (((w + 1) <= (this->getWidth() - 1)) && (this->maze[h][w + 1] == ' ')) //right
+			if (((col + 1) <= (this->getWidth() - 1)) && (this->maze[row][col + 1] == ' ')) //move right
 			{
-				cur = new int[2];
-				cur[0] = h;
-				cur[1] = w + 1;
-				tor.EnQueue(cur);
+				nextMove = new int[2];			//allocate new move
+				nextMove[0] = row;
+				nextMove[1] = col + 1;
+				tor.EnQueue(nextMove);			//push next move to queue
 
 			}
-			if (((h + 1) < this->getHight() - 1) && (this->maze[h + 1][w] == ' ')) //down
+			if (((row + 1) < this->getHight() - 1) && (this->maze[row + 1][col] == ' ')) //move down
 			{
-				cur = new int[2];
-				cur[0] = h + 1;
-				cur[1] = w;
-				tor.EnQueue(cur);
+				nextMove = new int[2];			//allocate new move
+				nextMove[0] = row + 1;
+				nextMove[1] = col;
+				tor.EnQueue(nextMove);			//push next move to queue
 			}
-			if (((w - 1) > 0) && (this->maze[h][w - 1] == ' '))//left
+			if (((col - 1) > 0) && (this->maze[row][col - 1] == ' '))	//move left
 			{
-				cur = new int[2];
-				cur[0] = h;
-				cur[1] = w - 1;
-				tor.EnQueue(cur);
+				nextMove = new int[2];			//allocate new move
+				nextMove[0] = row;
+				nextMove[1] = col - 1;
+				tor.EnQueue(nextMove);			//push next move to queue
 			}
 
-			if (((h - 1) > 0) && (this->maze[h - 1][w] == ' ')) //up
+			if (((row - 1) > 0) && (this->maze[row - 1][col] == ' '))	//move up
 			{
-				cur = new int[2];
-				cur[0] = h - 1;
-				cur[1] = w;
-				tor.EnQueue(cur);
+				nextMove = new int[2];			//allocate new move
+				nextMove[0] = row - 1;
+				nextMove[1] = col;
+				tor.EnQueue(nextMove);			//push next move to queue
 			}
 		}
-		//cout << endl;
-		//this->print();
 	}
-	if (this->maze[hight - 2][width - 1] == '$')
+
+	if (this->maze[hight - 2][width - 1] == '$')	//check if marked visit at exit point-maze solved
 		return true;
 	else
-		return false; //:)
-
-
-
-
+		return false;
 }
 
 //Build your own maze using input from the keyboard
-//checks if it good and return if so
+//Check if maze is good, meaning: only '*' and space chars are allowed,
+//The frame can consists only '*', an opening point at 1,0 and an exit point at h-2,w-1.
 bool Maze::buildMaze()
 {
-	char r[81];
+	char r[MAX_WIDTH+1];
 	int i, j;
 	cin.ignore();
 
 	for (i = 0; i < this->getHight(); i++)
 	{
-		cin.getline(r, 80);
-		if (strlen(r) != this->getWidth())		//lines not in same length
+		cin.getline(r, MAX_WIDTH + 1);
+
+		if (strlen(r) != this->getWidth())		//lines not in same length as width entered
 			return false; 
 
-		for (j = 0; j < this->getWidth(); j++)
+		for (j = 0; j < this->getWidth(); j++)	//write chars in maze only if valid- '*' or space
 			if (r[j] == ' ')
 				this->maze[i][j] = ' ';
 			else if (r[j] == '*')
 				this->maze[i][j] = '*';
 			else
-				return false; //bad input, signes other then * or space
+				return false;					//bad input, signes other then '*' or space
 	}
 
-	if (this->checkMaze())
+	if (this->checkMaze())						//check frame, enter point and exit point
 		return true;
 
 	return false;
 }
 
-//check if maze is good, meaning : only '*' and 'space' char are allawoed
-//the frame can consists only * and an opening point at 1,0 and exit point at h-2,w-1.
+
 bool Maze::checkMaze()
-{
-	bool res = true;
+{//check frame all '*', except space at enter point and exit point .
 	int i, j;
 
-	if ((maze[1][0] != ' ') && (maze[hight - 2][width - 1] != ' ')) //enter and exit points
+	if ((maze[1][0] != ' ') && (maze[hight - 2][width - 1] != ' '))		//check enter and exit points
 		return false;
 
-	for (i = 0; i < this->hight; i++)		//check frame
+	for (i = 0; i < this->hight; i++)									//check frame
 	{
 		for (j = 0; j < this->width; j++)	
 		{
 
-			if (maze[0][j] != '*')					//first row
+			if (maze[0][j] != '*')										//first row
 				return false;
-			if (maze[this->hight - 1][j] != '*')	// last row
+			if (maze[this->hight - 1][j] != '*')						// last row
 				return false;
 		}
 
-		if (maze[i][0] != '*' && i != 1)			//first col except from enter point 1,0
+		if (maze[i][0] != '*' && i != 1)								//first col except from enter point 1,0
 			return false;
 		if (maze[i][width - 1] != '*' && i != hight - 2)				//last col except frmo exit point h-2,w-1
 			return false;
 	}
 
-	return res;
+	return true;					//nothing wrong
 }
 
-//print the maze
 void Maze::print()
-{
+{//print the maze
 	int i, j;
 
 	for (i = 0; i < hight; i++)
@@ -293,17 +291,6 @@ void Maze::print()
 		}
 		cout << endl;
 	}
-}
-
-
-int Maze::getHight()
-{
-	return (this->hight);
-}
-
-int Maze::getWidth()
-{
-	return (this->width);
 }
 
 
