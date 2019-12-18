@@ -9,7 +9,7 @@ Maze::Maze(int hight, int width)
 	setHight(hight);
 	setWidth(width); //put it at maze only if its good - if you dont follow the rules its the biggest maze
 
-		maze = new char*[this->hight];
+	maze = new char*[this->hight];
 	if (!maze)
 		exit(-100);
 
@@ -20,10 +20,10 @@ Maze::Maze(int hight, int width)
 	{
 		for (j = 0; j < this->width; j++)
 		{
-			if ((i == this->hight - 1) || (j == this->width - 1) || (i % 2 == 0) || (j % 2 == 0))
-				maze[i][j] = '*';
-			else
-				maze[i][j] = ' ';
+			if ((i == hight - 1) || (j == width - 1) || (i % 2 == 0) || (j % 2 == 0))
+					maze[i][j] = '*';
+				else
+					maze[i][j] = ' ';
 
 		}
 	}
@@ -48,7 +48,7 @@ bool Maze::setHight(int hight)
 	if ((hight > 25 && hight < 4) || hight % 2 == 0)
 	{
 		cout << "Hight needs to be an un-even number between 3-25" << endl;
-		this->hight = 19;
+		this->hight = 25;
 		return false;
 	}
 

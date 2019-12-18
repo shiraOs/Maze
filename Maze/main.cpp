@@ -3,7 +3,7 @@
 
 //Maze Creator and Solver 
 //by Alon Ben Harosh 
-///Shira kflsahfuetop XXXXXXXXXX <====== shira enter here
+//Shira ostrinsky 311119002 
 //Choose 1 to enter your own maze by and 2 for the Random Creation of a maze
 //after that enter your higth(3-20) and width(3-80) of the maze: an un-even number
 //if your choose 1: enter the string of chars with only: '*' for wall, or 'space' for blank
@@ -13,25 +13,26 @@ int main()
 {
 	
 	int choice, h, w;
-	Maze *maze;
 	cout << "Maze: 1) From input 2) Random" << endl;
-	cin >> choice>>h>>w;
+	cin >> choice;
+	cin >> h;
+	cin >> w;
 	cout<< endl;
 	
-	maze = new Maze(h, w);
+	Maze maze(h, w);
 
 
 	if (choice == 1)
 	{
-		if (!maze->buildMaze())
+		if (!(maze.buildMaze()))
 		{
 			cout << "invalid input" << endl;
 			exit(1);
 		}
 		else
 		{
-			if (maze->solve())
-				maze->print();
+			if (maze.solve())
+				maze.print();
 			else
 				cout << "no solution";
 		}
@@ -41,11 +42,11 @@ int main()
 			exit(5);
 		else
 		{
-			maze->create();
-			if (maze->solve())
-				maze->print();
+			maze.create();
+			if (maze.solve())
+				maze.print();
 			else
 				cout << "no solution"; //:)
 		}
-	delete maze;
+	
 }
