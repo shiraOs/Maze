@@ -138,6 +138,7 @@ void Maze::create()
 
 			s1.Push(k);
 			s1.Push(temp);
+			delete k;
 		}
 	}
 	for (int i = 0; i < hight; i++)

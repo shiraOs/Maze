@@ -43,9 +43,9 @@ int* Stack::Pop()
 	}
 	
 	Node* temp = top;
-	int* item = top->data;
-	//item[0] = top->data[0];
-	//item[1] = top->data[1];
+	int* item = new int[2];
+	item[0] = top->data[0];
+	item[1] = top->data[1];
 	top = top->next;
 	delete temp;
 	return item;
