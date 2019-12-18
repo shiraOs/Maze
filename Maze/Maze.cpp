@@ -33,7 +33,7 @@ Maze::Maze(int hight, int width)
 Maze::~Maze()
 {
 	int i;
-	for (i = 0; i < width; i++)
+	for (i = 0; i < hight; i++)
 		delete  maze[i];
 
 	delete[] maze;
