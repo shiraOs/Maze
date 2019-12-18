@@ -51,9 +51,13 @@ int main()
 			exit(1);
 		}
 	}
+
+	maze.print();
 	
 	if (maze.solve())				//try to solve
 		maze.print();				//solve-print
 	else
 		cout << "no solution" << endl;
+
+	system("pause");
 }

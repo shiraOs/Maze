@@ -76,12 +76,13 @@ void Maze::create()
 {//Creat a random maze by using stack
 	Stack s1;
 	int currMove[2], right[2], left[2], down[2], up[2];
-	int *nextMove;
-	int col= 1, row = 1, countRand, randValue;
+	int* nextMove;
+	int row, col, countRand, randValue;
 	int* path[4];
 
+	row = 1;
+	col = 1;
 	srand((unsigned)time(NULL));
-
 	currMove[0] = row;
 	currMove[1] = col;
 	s1.Push(currMove);
@@ -94,13 +95,13 @@ void Maze::create()
 		row = nextMove[0];
 		col = nextMove[1];
 		this->maze[row][col] = '$';							//mark for visit there
-		
 		if (((col + 2) < (this->getWidth() - 1)) && (this->maze[row][col + 2] == ' ')) //check move right
 		{
 			right[0] = row;
 			right[1] = col + 2;
 			path[countRand] = right;
 			countRand++;
+
 		}
 		if (((row + 2) < this->getHight() - 1) && (this->maze[row + 2][col] == ' ')) //check move down
 		{
@@ -109,42 +110,42 @@ void Maze::create()
 			path[countRand] = down;
 			countRand++;
 		}
-		if (((col - 2) > 0) && (this->maze[row][col - 2] == ' '))					//check move left
+		if (((col - 2) > 0) && (this->maze[row][col - 2] == ' '))	//check move left
 		{
 			left[0] = row;
 			left[1] = col - 2;
 			path[countRand] = left;
 			countRand++;
 		}
-		if (((row - 2) > 0) && (this->maze[row - 2][col] == ' '))						//check move up
+
+		if (((row - 2) > 0) && (this->maze[row - 2][col] == ' ')) //check move up
 		{
 			up[0] = row - 2;
 			up[1] = col;
 			path[countRand] = up;
 			countRand++;
 		}
-
+		
 		if (countRand != 0)
 		{//there are moves
 			randValue = rand() % countRand;
-			nextMove[0] = path[randValue][0];
-			nextMove[1] = path[randValue][1];
+			currMove[0] = path[randValue][0];
+			currMove[1] = path[randValue][1];
 
-			if (nextMove[1] == col + 2)				//move right
+			if (currMove[1] == col + 2)				//move right
 				this->maze[row][col + 1] = ' ';
-			else if (nextMove[1] == col - 2)		//move left
+			else if (currMove[1] == col - 2)		//move left
 				this->maze[row][col - 1] = ' ';
-			else if (nextMove[0] == row + 2)		//move down
+			else if (currMove[0] == row + 2)		//move down
 				this->maze[row + 1][col] = ' ';
 			else
 				this->maze[row - 1][col] = ' ';		//move up
 
-			s1.Push(currMove);						//push curr move
 			s1.Push(nextMove);						//push next move
+			s1.Push(currMove);						//push curr move
+			delete[] nextMove;
 		}
-		delete[] nextMove;
 	}
-
 	for (int i = 0; i < hight; i++)
 		for (int j = 0; j < width; j++)
 			if (this->maze[i][j] == '$')
