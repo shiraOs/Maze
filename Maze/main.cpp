@@ -1,16 +1,13 @@
 #include "Maze.h"
 
 //Maze Creator and Solver
-//by Alon Ben Harosh
+//by Alon Ben Harosh 312533698
 //Shira ostrinsky 311119002
-//Choose 1 to enter your own maze by and 2 for the Random Creation of a maze
-//after that enter your higth(3-20) and width(3-80) of the maze: an un-even number
-//if your choose 1: enter the string of chars with only: '*' for wall, or 'space' for blank
-//the perimeter most be only * and an opening point at 1,0 and h-2,w-1
-//enjoy!!!!
-
-const int MAX_HIGHT = 25;
-const int MAX_WIDTH = 80;
+//Choose 1 to enter your own maze, or 2 to create a random maze.
+//Then enter wanted higth (3-20) and width (3-80) of the maze: need to be odd number for random maze!
+//If you chose 1: enter the string of chars with only: '*' for wall, or 'space' for blank
+//The frame must be only '*' and spce for opening point at (1,0) and exit point at (hight-2,width-1)
+//ENJOY!!!!
 
 int main()
 {
@@ -29,25 +26,25 @@ int main()
 		exit(1);
 	}
 	
-	Maze maze(h, w);
+	Maze maze(h, w);			//build maze skeleton
 
-	if (choice == 1)			//build his own maze
+	if (choice == 1)			//build user's own maze
 	{
 		if (maze.buildMaze() == false)
-		{
+		{//exit for wrong input
 			cout << "invalid input" << endl;
 			exit(1);
 		}
 	}
-	else if (choice != 2)		//not one of the options
+	else if (choice != 2)		//exit if not one of the options
 	{
 		cout << "invalid input" << endl;
 		exit(1);
 	}
 	else
-	{
+	{//option 1
 		if (h % 2 == 1 && w % 2 == 1)
-			maze.create();				//build random maze
+			maze.create();				//build random maze for odd hight and width
 		else
 		{
 			cout << "invalid input" << endl;
@@ -58,6 +55,5 @@ int main()
 	if (maze.solve())				//try to solve
 		maze.print();				//solve-print
 	else
-		cout << "no solution";		
-			 
+		cout << "no solution" << endl;
 }

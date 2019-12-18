@@ -17,18 +17,17 @@ Node::Node(int* data, Node* ptr)
 	next = ptr;
 }
 
-void Node::InsertAfter(Node * newNode)
+void Node::InsertAfter(Node* newNode)
 {
 	newNode->next = next;
 	next = newNode;
 }
 
-Node * Node::DeleteAfter()
+Node* Node::DeleteAfter()
 {
 	Node* temp = next;
 	if (next == nullptr)
 		return nullptr;
 	next = temp->next;
 	return temp;
-	return nullptr;
 }
