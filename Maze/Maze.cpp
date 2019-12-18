@@ -1,14 +1,15 @@
 #include "Maze.h"
 
 
-
+//ctor for maze
 Maze::Maze(int hight, int width)
 {
 	int i, j;
 	if (setHight(hight) && setWidth(width))
 	{
-		maze = new char*[hight];
-		//check alloction
+		maze = new char*[hight]; 
+		if (!maze)
+			exit(-100);
 
 		for (i = 0; i < hight; i++)
 			maze[i] = new char[width];
@@ -17,21 +18,7 @@ Maze::Maze(int hight, int width)
 		{
 			for (j = 0; j < width; j++)
 			{
-				//if ((i == 0) || (j == 0) || (i == hight - 1) || (j == width - 1))
-				//	maze[i][j] = '*';
-				//else
-				//{
-				//	if (i % 2 != 0)//uneven
-				//	{
-				//		if (j % 2 == 0)
-				//			maze[i][j] = '*';
-				//		else
-				//			maze[i][j] = ' ';
-				//	}
-				//	else
-				//		maze[i][j] = '*';
-				//}
-				if ((i == hight - 1) || (j == width - 1) || (i % 2 == 0) || (j % 2 == 0))
+			  if ((i == hight - 1) || (j == width - 1) || (i % 2 == 0) || (j % 2 == 0))
 					maze[i][j] = '*';
 				else
 					maze[i][j] = ' ';
@@ -43,21 +30,22 @@ Maze::Maze(int hight, int width)
 	}
 }
 
-
+//d'tor for maze
 Maze::~Maze()
 {
-	/*int i;
+	int i;
 	for (i = 0; i < width; i++)
-		delete  maze[i];*/
+		delete  maze[i];
 
-	//delete[] maze;
+	delete[] maze;
 }
+
 
 bool Maze::setHight(int hight)
 {
 	if ((hight > 25 && hight < 4) || hight % 2 == 0)
 	{
-		cout << "not good mate........" << endl;
+		cout << "Hight needs to be an un-even number between 3-25" << endl;
 		return false;
 	}
 
@@ -70,7 +58,7 @@ bool Maze::setWidth(int width)
 {
 	if ((width > 80 && width < 4) || width % 2 == 0)
 	{
-		cout << "not good mate........" << endl;
+		cout << "Width needs to be an un-even number between 3-80" << endl;
 		return false;
 	}
 
@@ -79,29 +67,28 @@ bool Maze::setWidth(int width)
 }
 
 
-
+//Creat a random maze by using stack 
 void Maze::create()
 {
 	Stack s1; 
-	int temp[2],right[2],left[2],down[2],up[2];
-	int* k;
-	int kgo[2]; 
+	int temp[2],right[2],left[2],down[2],up[2]; 
+	int* val;
+	int help[2]; 
 	int h, w,count,rad;
 	int* path[4];
 	
-	h = 1;
-	w = 1;
-	srand((unsigned)time(NULL));
-	temp[0] = h;
-	temp[1] = w;
+	
+	srand((unsigned)time(NULL)); // random as showen 
+	temp[0] = h = 1;
+	temp[1] = w = 1;
 	s1.Push(temp);
 
 	while (!s1.IsEmpty())
 	{
 		right[0] = right[1] = left[0] = left[1] = up[0] = up[1] = down[0] = down[1] = count = 0;
-		k = s1.Pop();
-		h = k[0];
-		w = k[1];
+		val = s1.Pop();
+		h = val[0];
+		w = val[1];
 		this->maze[h][w] = '$';
 		if (((w + 2) < (this->getWidth() - 1)) && (this->maze[h][w + 2] == ' ')) //right
 		{
@@ -136,9 +123,9 @@ void Maze::create()
 		//-----------------
 		if (count != 0)
 		{
-			kgo[0] = k[0];
-			kgo[1] = k[1]; //because rand delete k from some reason ?????
-			rad = rand() % count;
+			help[0] = val[0]; /// - for unknown reason val get deleted after using rand
+			help[1] = val[1]; ///in the next line, couldnt explian why as it haven o interaction with val
+			rad = rand() % count; // <==== this deletes val 
 			temp[0] = path[rad][0];
 			temp[1] = path[rad][1];
 
@@ -151,12 +138,9 @@ void Maze::create()
 			else
 				this->maze[h - 1][w] = ' '; //if up
 
-			s1.Push(kgo);
+			s1.Push(help);
 			s1.Push(temp);
 		}
-			
-
-
 	}		
 	for (int i = 0; i < hight; i++)
 		for (int j = 0; j < width; j++)
@@ -164,6 +148,8 @@ void Maze::create()
 				this->maze[i][j] = ' ';
 }
 
+//Solve the maze using queue 
+//retun true if solve, false otherwise
 bool Maze::solve()
 {
 	Queue tor;
@@ -222,19 +208,20 @@ bool Maze::solve()
 				tor.EnQueue(cur);
 			}
 		}
-		//cout << endl;
-		//this->print();
+		
 	}
-	if (this->maze[hight - 2][width - 1] == '$')
+	if (this->maze[hight - 2][width - 1] == '$') //if the path got to exit point
 		return true;
 	else
-		return false; //:)
+		return false; 
 
 	
 
 
 }
 
+//Build your own maze using input from the keyboard
+//checks if it good and return if so
 bool Maze::buildMaze()
 {
 
@@ -245,7 +232,7 @@ bool Maze::buildMaze()
 	for (i = 0; i < this->getHight(); i++)
 	{
 		cin.getline(r, 80);
-		if (strlen(r) != this->getWidth())
+		if (strlen(r) != this->getWidth()) // to short or too long
 			return false; //:)
 		for (j = 0; j < this->getWidth(); j++)
 			if (r[j] == ' ')
@@ -262,6 +249,8 @@ bool Maze::buildMaze()
 	return false;
 }
 
+//check if maze is good, meaning : only '*' and 'space' char are allawoed
+//the perimeter most be only * and an opening point at 1,0 and h-2,w-1
 bool Maze::checkMaze()
 {
 	bool res = true;
@@ -276,13 +265,10 @@ bool Maze::checkMaze()
 		{
 			if ((maze[i][j] != '*') && (maze[i][j] != ' ')) //bad input
 				return false;
-
-			if (maze[0][j] != '*')//first row
+			if (maze[0][j] != '*') 
 				return false;
-			if (maze[this->hight - 1][j] != '*') // last row
-				return false;
-
-					
+			if (maze[this->hight - 1][j] != '*') 
+				return false;							
 		}
 
 		if (maze[i][0] != '*')
@@ -293,37 +279,19 @@ bool Maze::checkMaze()
 				return false;
 		
 	}
-	/*
-	for (i = 0; i < this->width; i++)
-	{
-		if ((maze[i][0] != '*') && (maze[i][0] != ' '))
-			return false;
-		if (i == 1)
-			if (maze[i][0] != ' ')
-				return false;
-		if ((maze[i][this->width - 1] != '*') && (maze[i][this->width - 1] != ' '))
-			return false;
-
-		if (i == hight - 2)
-			if (maze[i][width - 1] != ' ')
-				return false;
-	}
-	*/
+	
 	return res;
 }
 
+//print the maze
 void Maze::print()
 {
 	int i, j;
-
-
 	for (i = 0; i < hight; i++)
 	{
 		for (j = 0; j < width; j++)
-		{
 			cout << maze[i][j] << " ";
-
-		}
+		
 		cout << endl;
 	}
 }
